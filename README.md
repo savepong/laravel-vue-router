@@ -17,3 +17,10 @@ yarn add vue-router # or npm install vue-router
 ```
 yarn watch
 ```
+
+```
+mysql -u root -e"create database vue_spa;"
+
+# or you could prompt for the password with the -p flag
+mysql -u root -e"create database vue_spa;" -p
+```
