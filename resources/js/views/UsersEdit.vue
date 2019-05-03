@@ -13,6 +13,7 @@
             </div>
             <div class="form-group">
                 <button type="submit" :disabled="saving">Update</button>
+                <button :disabled="saving" @click.prevent="onDelete($event)">Delete</button>
             </div>
         </form>
         <router-link :to="{ name: 'users.index' }">Back</router-link>
@@ -21,6 +22,7 @@
 
 <script>
 import api from '../api/users';
+import { setTimeout } from 'timers';
 
 export default {
     data() {
@@ -49,14 +51,27 @@ export default {
             }).catch(error => {
                 console.log(error)
             }).then(_=> this.saving = false);
+        },
+        onDelete() {
+            this.saving = true;
+
+            api.delete(this.user.id)
+                .then((response) => {
+                    this.message = 'User Deleted';
+                    setTimeout(() => this.$router.push({ name: 'users.index' }), 2000);
+                });
         }
     },
     created() {
-        api.find(this.$route.params.id).then((respone) => {
+        api.find(this.$route.params.id).then((response) => {
             setTimeout(() => {
                 this.loaded = true;
-                this.user = respone.data.data;
+                this.user = response.data.data;
+                console.log(response.data)
             }, 5000);
+        })
+        .catch((err) => {
+            this.$router.push({ name: '404' });
         });
     }
 };
