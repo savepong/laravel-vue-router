@@ -1,23 +1,14 @@
 <template>
     <div class="users">
-        <div class="loading" v-if="loading">
-            Loading...
-        </div>
-
         <div class="error" v-if="error">
             <p>{{ error }}</p>
-
-            <p>
-                <button @click.prevent="fetchData">
-                    Try Again
-                </button>
-            </p>
         </div>
 
         <ul v-if="users">
-            <li v-for="{ name, email } in users" v-bind:key="name">
+            <li v-for="{ id, name, email } in users" v-bind:key="name">
                 <strong>Name:</strong> {{ name }},
                 <strong>Email:</strong> {{ email }}
+                <router-link :to="{ name: 'users.edit', params: { id } }">Edit</router-link>
             </li>
         </ul>
 
@@ -55,7 +46,7 @@ export default {
                 next: null,
                 prev: null,
             },
-            errors: null,
+            error: null,
         };
     },
     computed: {
